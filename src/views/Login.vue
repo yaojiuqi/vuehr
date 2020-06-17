@@ -6,7 +6,7 @@
 				<el-input type='text' v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名"></el-input>
 			</el-form-item>
 			<el-form-item prop="password">
-				<el-input type='password' v-model="loginForm.password" auto-complete="off" placeholder="请输入密码"></el-input>
+				<el-input type='password' v-model="loginForm.password" auto-complete="off" placeholder="请输入密码" @keydown.enter.native="submitLogin"></el-input>
 			</el-form-item>
 			<el-checkbox v-model="checked" class="loginRemember">记住密码</el-checkbox>
 			<el-button type="primary" style="width: 100%;" @click="submitLogin">登录</el-button>
@@ -20,7 +20,7 @@
 		data(){
 			return {
 				loginForm: {
-					username: 'admin',
+					username: 'yjq',
 					password: '123'
 				},
 				checked: true,
@@ -37,7 +37,8 @@
 							  this.postKeyValueRequest("/login",this.loginForm).then(res=>{
 								  if(res){
 									  window.sessionStorage.setItem("user",JSON.stringify(res.data))
-									  this.$router.replace('/home')
+									  let path = this.$route.query.redirect;
+									  this.$router.replace((path=="/"||path==undefined)?'/home':path);
 								  }
 							  })
 				          } else {
